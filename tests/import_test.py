@@ -1,5 +1,5 @@
 from unittest import TestCase
-from source.importingFile import getCSVS
+from source.importingFile import get_csvs
 import os
 import datetime
 import getpass
@@ -24,9 +24,9 @@ class TestImport(TestCase):
 
         correctFileList = {1: "test1.csv", 2: "test2.csv", 3: "test3.csv"}
 
-        self.assertEqual(correctFileList, getCSVS("."))
+        self.assertEqual(correctFileList, get_csvs("."))
 
         for testFile in correctFileList.values(): os.remove(testFile)
 
     def test_find_no_csv(self):
-        self.assertIsNone(getCSVS())
+        self.assertEqual({}, get_csvs("."))

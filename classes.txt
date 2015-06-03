@@ -1,0 +1,19 @@
+Profile:
+	category = dictionary k:num v:string
+	cat_map = dictionary k:num v:array of strings
+	name = string
+	
+Transaction:
+	amount = num
+	trans_date = string
+	memo = string
+	catID = num
+	
+Mapping
+	name = string
+	has_header = True/False
+	amount_column_index = num
+	date_column_index = num
+	memo_column_index = num
+	debit_as_negative = True/False
+
