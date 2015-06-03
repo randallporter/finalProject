@@ -29,3 +29,9 @@ def get_columns(row):
     memo = get_int("Enter the column number corresponding to memos")
 
     return [amount, date, memo]
+
+def get_negative_withdrawls():
+    return get_string("Does the file use negative values for withdrawls? Enter Y or N for yes or no") == "Y"
+
+def get_bank_name():
+    return get_string("Enter the name of the bank this file is from")
