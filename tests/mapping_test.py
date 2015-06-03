@@ -57,11 +57,11 @@ class TestMapper(TestCase):
 
     def test_negative_amount(self):
         with patch('__builtin__.raw_input', return_value="Y") as mock_input:
-            self.assertTrue(source.map_columns.get_negative_withdrawls())
-        mock_input.assert_called_with("Does the file use negative values for withdrawls? Enter Y or N for yes or no: ")
+            self.assertTrue(source.map_columns.get_negative_withdrawals())
+        mock_input.assert_called_with("Does the file use negative values for withdrawals? Enter Y or N for yes or no: ")
 
         with patch('__builtin__.raw_input', return_value="N"):
-            self.assertFalse(source.map_columns.get_negative_withdrawls())
+            self.assertFalse(source.map_columns.get_negative_withdrawals())
 
     def test_bank_name(self):
         with patch('__builtin__.raw_input', return_value="First Tech FCU") as mock_input:
