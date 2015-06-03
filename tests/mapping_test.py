@@ -19,4 +19,5 @@ class TestMapper(TestCase):
     def tearDown(self):
         pass
 
-    def test_
+    def test_Mapper(self):
+        pass

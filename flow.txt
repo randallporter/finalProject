@@ -34,7 +34,7 @@ create categories or load categories or both
 
 iterate through data, categorize, create rules
 
-when exporting the finished product, we will possibly just trite a new column to the original CSV files with categories
+when exporting the finished product, we will possibly just write a new column to the original CSV files with categories
 
 list of default categories:
     gas
