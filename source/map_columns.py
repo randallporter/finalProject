@@ -1,5 +1,10 @@
 from source.user_input import get_string, get_int
 
+import os
+
+def cls():
+    os.system(['clear','cls'][os.name == 'nt'])
+
 class Mapping:
     def __init__(self, name, has_header, amount, date, memo, negative = True):
         self.name = name

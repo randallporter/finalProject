@@ -14,6 +14,7 @@ import logging
 class TestImport(TestCase):
     """
     """
+
     def test_find_three_csv(self):
         test_dir = './tests/'
 
@@ -24,15 +25,15 @@ class TestImport(TestCase):
         with open(test_dir + "test3.csv", "w+") as f3:
             f3.write("test,test,test")
 
-        correct_file_list = {1: "test1.csv", 2: "test2.csv", 3: "test3.csv"}
+        correct_file_list = ["test1.csv", "test2.csv", "test3.csv"]
 
-        self.assertEqual(correct_file_list, get_csvs(test_dir))
+        self.assertTrue(correct_file_list <= get_csvs(test_dir))
 
-        for testFile in correct_file_list.values():
+        for testFile in correct_file_list:
             os.remove(test_dir + testFile)
 
     def test_find_no_csv(self):
-        self.assertEqual({}, get_csvs('./tests/'))
+        self.assertEqual([], get_csvs('./tests/'))
 
     def test_bad_path(self):
-        self.assertEqual({}, get_csvs('./testsklhygugvyuugbjgk/'))
+        self.assertEqual([], get_csvs('./testsklhygugvyuugbjgk/'))
