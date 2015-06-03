@@ -1,75 +1,77 @@
 create profile or load profile
-	creating a profile:
-		1. enter your name
-	loading a profile:
-		1. enter the path of the profile
+    creating a profile:
+        1. enter your name
+    loading a profile:
+        1. enter the path of the profile
 
 load csv file/files
-	loading the file:
-		1. user enters a path
-		2. the CSV files are listed with numbers
-		3. prompt the user for the number of the csv file they want
-		4. ask the user for another number or to just hit enter to use only the files selected so far
+    loading the file:
+        1. user enters a path
+        2. the CSV files are listed with numbers
+        3. prompt the user for the number of the csv file they want
+        4. ask the user for another number or to just hit enter to use only the files selected so far
 
 create map or load mapping
-	ask the user if they want to create the mapping or load a mapping file
-	loading a map:
-		1. ask the user for the path to their mapping file
-		2. load the contents of the mapping file into a list of mapping objects
-		3. show the list of banks
-		4. ask the user which of these banks their current file is from
-		5. if not in the list, create a map
-	creating a map:
-		1. ask if the file has headers
-		2. display a list of cells from the first row along with numbers
-		3. ask which number corresponds to data, memo and amount
-		4. ask if the file uses negative values for withdrawls
-		5. ask the name of the bank where the file is from
-		6. add map to loaded file, or save to a new file if no loaded file
+    ask the user if they want to create the mapping or load a mapping file
+    loading a map:
+        1. ask the user for the path to their mapping file
+        2. load the contents of the mapping file into a list of mapping objects
+        3. show the list of banks
+        4. ask the user which of these banks their current file is from
+        5. if not in the list, create a map
+    creating a map:
+        1. ask if the file has headers
+        2. display a list of cells from the first row along with numbers
+        3. ask which number corresponds to data, memo and amount
+        4. ask if the file uses negative values for withdrawls
+        5. ask the name of the bank where the file is from
+        6. add map to loaded file, or save to a new file if no loaded file
 
 create categories or load categories or both
-	if the loaded profile has a list of categories, load those into a categories list
-	if desired, the user can add, edit or remove categories from the list
-	when the program finishes, the categories will be saved with the profile
+    if the loaded profile has a list of categories, load those into a categories list
+    if desired, the user can add, edit or remove categories from the list
+    when the program finishes, the categories will be saved with the profile
 
 iterate through data, categorize, create rules
 
+when exporting the finished product, we will possibly just trite a new column to the original CSV files with categories
+
 list of default categories:
-	gas
-	automotive
-	pet care
-	travel
-	health
-	entertainment
-	taxes
-	restaurants
-	groceries
-	credit card payments
-	apparel
-	home improvements
-	electronics
-	hobbies
-	bills
-	online shopping
-	other
+    gas
+    automotive
+    pet care
+    travel
+    health
+    entertainment
+    taxes
+    restaurants
+    groceries
+    credit card payments
+    apparel
+    home improvements
+    electronics
+    hobbies
+    bills
+    online shopping
+    other
 
 algorithm:
-	When analyzing next trans use look up dictionary for match
-		if past 85% auto selected unless another match is above 50%
-		elif between 40% - 85% list suggested cats with custom option
-		else ask what cat
-		
-	when cat is provided
-		strip numbers and store in look up dictionary
-		
+    When analyzing next trans use look up dictionary for match
+        if past 85% auto selected unless another match is above 50%
+        elif between 40% - 85% list suggested cats with custom option
+        else ask what cat
+
+    when cat is provided
+        strip numbers and store in look up dictionary
+
 closing:
-	save profiles
-	save lookup dictionary
-	save the categorized csv for graphing and budgeting 
-	
-	
+    save profiles
+    save lookup dictionary
+    save the categorized csv for graphing and budgeting
+
+
 clone
 changes
 commit
 fetch
-rebase	
+rebase
