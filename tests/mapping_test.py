@@ -51,7 +51,7 @@ class TestMapper(TestCase):
         with patch('__builtin__.raw_input', side_effect=["7", "1", "4"]) as mock_input:
             with patch('source.map_columns.display_row', return_value=None) as mock_display:
                 self.assertEqual(source.map_columns.get_columns(self.row), [7, 1, 4])
-        mock_input.assert_called_once_with("Enter the column number corresponding to transaction amounts: ")
-        mock_input.assert_called_once_with("Enter the column number corresponding to dates: ")
-        mock_input.assert_called_once_with("Enter the column number corresponding to memos: ")
-        mock_display.assert_called_once_with(self.row)
+        mock_input.assert_any_call("Enter the column number corresponding to transaction amounts: ")
+        mock_input.assert_any_call("Enter the column number corresponding to dates: ")
+        mock_input.assert_any_call("Enter the column number corresponding to memos: ")
+        self.assertEqual(mock_input.call_count, 3)
