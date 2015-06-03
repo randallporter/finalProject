@@ -1,17 +1,6 @@
 from unittest import TestCase
-from mock import patch, Mock
-from io import StringIO
+from mock import patch
 import source.user_input
-import os
-import datetime
-import getpass
-import random
-import socket
-import subprocess
-import threading
-import time
-import logging
-
 
 class TestUserInput(TestCase):
 
@@ -21,17 +10,20 @@ class TestUserInput(TestCase):
     def tearDown(self):
         pass
 
-    def question_displayed(self):
-        raw_input = Mock(return_value=None)
-        user_input.prompt("Please press enter . . . ")
-        raw_input.assert_called_with("Please press enter . . . ")
+    def test_question_displayed(self):
+        with patch('__builtin__.raw_input', return_value=None) as mock_input:
+            source.user_input.prompt()
 
-    def get_int_test(self):
-        raw_input = Mock(return_value=5)
-        self.assertEqual(user_input.get_int("Enter a number"), 5)
-        raw_input.assert_called_with("Enter a number: ")
+        mock_input.assert_called_with("Press enter to continue . . . ")
 
-    def get_string_test(self):
-        raw_input = Mock(return_value="Bob")
-        self.assertEqual(user_input.get_int("Enter your name"), "Bob")
-        raw_input.assert_called_with("Enter your name: ")
+    def test_get_int(self):
+        with patch('__builtin__.raw_input', return_value=5) as mock_input:
+            self.assertEqual(source.user_input.get_int("Enter a number"), 5)
+
+        mock_input.assert_called_with("Enter a number: ")
+
+    def test_get_string(self):
+        with patch('__builtin__.raw_input', return_value="Bob") as mock_input:
+            self.assertEqual(source.user_input.get_string("Enter your name"), "Bob")
+
+        mock_input.assert_called_with("Enter your name: ")

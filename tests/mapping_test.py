@@ -1,6 +1,5 @@
 from unittest import TestCase
 from source.Transaction import Transaction
-import source.create_maps
 import os
 import datetime
 import getpass
@@ -20,7 +19,7 @@ class TestMapper(TestCase):
     def tearDown(self):
         pass
 
-    def create_map(self):
-
+    def test_create_map(self):
+        pass
 
 
