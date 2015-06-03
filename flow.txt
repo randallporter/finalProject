@@ -23,7 +23,7 @@ create map or load mapping
         1. ask if the file has headers
         2. display a list of cells from the first row along with numbers
         3. ask which number corresponds to data, memo and amount
-        4. ask if the file uses negative values for withdrawls
+        4. ask if the file uses negative values for withdrawals
         5. ask the name of the bank where the file is from
         6. add map to loaded file, or save to a new file if no loaded file
 
