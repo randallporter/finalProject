@@ -1,0 +1,30 @@
+load csv file/files
+create map or load mapping
+	save map
+create profile or load profile
+create categories or load categories or both
+	save categories
+
+iterate through data, categorize, create rules
+
+
+algorithm:
+	When analyzing next trans use look up dictionary for match
+		if past 85% auto selected unless another match is above 50%
+		elif between 40% - 85% list suggested cats with custom option
+		else ask what cat
+		
+	when cat is provided
+		strip numbers and store in look up dictionary
+		
+closing:
+	save profiles
+	save lookup dictionary
+	save the categorized csv for graphing and budgeting 
+	
+	
+clone
+changes
+commit
+fetch
+rebase	
