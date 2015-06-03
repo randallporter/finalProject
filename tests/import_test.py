@@ -15,18 +15,24 @@ class TestImport(TestCase):
     """
     """
     def test_find_three_csv(self):
-        with open("test1.csv","w+") as f1:
+        test_dir = './tests/'
+
+        with open(test_dir + "test1.csv", "w+") as f1:
             f1.write("test,test,test")
-        with open("test2.csv","w+") as f2:
+        with open(test_dir + "test2.csv", "w+") as f2:
             f2.write("test,test,test")
-        with open("test2.csv","w+") as f3:
+        with open(test_dir + "test3.csv", "w+") as f3:
             f3.write("test,test,test")
 
-        correctFileList = {1: "test1.csv", 2: "test2.csv", 3: "test3.csv"}
+        correct_file_list = {1: "test1.csv", 2: "test2.csv", 3: "test3.csv"}
 
-        self.assertEqual(correctFileList, get_csvs("."))
+        self.assertEqual(correct_file_list, get_csvs(test_dir))
 
-        for testFile in correctFileList.values(): os.remove(testFile)
+        for testFile in correct_file_list.values():
+            os.remove(test_dir + testFile)
 
     def test_find_no_csv(self):
-        self.assertEqual({}, get_csvs("."))
+        self.assertEqual({}, get_csvs('./tests/'))
+
+    def test_bad_path(self):
+        self.assertEqual({}, get_csvs('./testsklhygugvyuugbjgk/'))
