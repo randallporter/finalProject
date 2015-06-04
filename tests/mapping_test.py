@@ -1,18 +1,7 @@
 from unittest import TestCase
-from source.Transaction import Transaction
 import source.map_columns
 from io import BytesIO
 from mock import patch
-import os
-import datetime
-import getpass
-import random
-import socket
-import subprocess
-import threading
-import time
-import logging
-
 
 class TestMapper(TestCase):
 
@@ -68,8 +57,8 @@ class TestMapper(TestCase):
             self.assertEqual(source.map_columns.get_bank_name(), "First Tech FCU")
         mock_input.assert_called_with("Enter the name of the bank this file is from: ")
 
-    @patch('sys.stdout', new_callable=BytesIO)
-    def test_create_mapping(self, mock_stdout):
+    def test_create_mapping(self):
         test_mapping = source.map_columns.Mapping("First Tech FCU", True, 7, 1, 4, True)
-        with patch('__builtin__.raw_input', side_effect=["First Tech FCU", "Y", "7", "1", "4", "Y"]) as mock_input:
-            self.assertEqual(source.map_columns.map_columns(self.row), test_mapping)
+        with patch('sys.stdout'):
+            with patch('__builtin__.raw_input', side_effect=["First Tech FCU", "Y", "7", "1", "4", "Y"]):
+                self.assertEqual(source.map_columns.map_columns(self.row), test_mapping)

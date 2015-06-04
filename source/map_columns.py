@@ -2,8 +2,10 @@ from source.user_input import get_string, get_int
 
 import os
 
+
 def cls():
     os.system(['clear','cls'][os.name == 'nt'])
+
 
 class Mapping:
     def __init__(self, name, has_header, amount, date, memo, negative):
@@ -22,14 +24,17 @@ class Mapping:
             and self.memo_column_index == other.memo_column_index \
             and self.debit_as_negative == other.debit_as_negative
 
+
 def display_row(row):
     index = 1
     for string in row:
         print str(index) + ". " + string
         index += 1
 
+
 def get_has_headers():
     return get_string("Does the file have headers? Enter Y or N for yes or no") == "Y"
+
 
 def get_columns():
     amount = get_int("Enter the column number corresponding to transaction amounts")
@@ -38,11 +43,14 @@ def get_columns():
 
     return [amount, date, memo]
 
+
 def get_negative_withdrawals():
     return get_string("Does the file use negative values for withdrawals? Enter Y or N for yes or no") == "Y"
 
+
 def get_bank_name():
     return get_string("Enter the name of the bank this file is from")
+
 
 def map_columns(row):
     name = get_bank_name()
