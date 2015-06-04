@@ -1,5 +1,5 @@
 Profile:
-	category = dictionary k:num v:string
+	categories = dictionary k:num v:string
 	cat_map = dictionary k:num v:array of strings
 	name = string
 	
