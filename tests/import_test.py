@@ -36,7 +36,7 @@ class TestImport(TestCase):
         os.rmdir(self.test_dir)
 
     def test_find_three_csv(self):
-        self.assertTrue(self.correct_file_list <= get_csvs(self.test_dir))
+        self.assertEqual(self.correct_file_list, sorted(get_csvs(self.test_dir)))
 
     def test_find_no_csv(self):
         empty_dir = "\\nothing_here\\"
