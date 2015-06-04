@@ -1,6 +1,7 @@
 from unittest import TestCase
 from source.importingFile import get_csvs
 import os
+from mock import patch
 import datetime
 import getpass
 import random
@@ -15,47 +16,14 @@ class TestImport(TestCase):
     """
     """
 
-    def setUp(self):
-        self.test_dir = ".\\test_files\\"
-
-        if not os.path.exists(self.test_dir):
-            os.makedirs(self.test_dir)
-
-        #with open(self.test_dir + "test1.csv", "w+") as f1:
-        #    f1.write("test,test,test")
-        #with open(self.test_dir + "test2.csv", "w+") as f2:
-        #    f2.write("test,test,test")
-        #with open(self.test_dir + "test3.csv", "w+") as f3:
-        #    f3.write("test,test,test")
-
-        f1 = open(self.test_dir + "test1.csv", "wb")
-        f1.write("test,test,test")
-        f1.close()
-        f2 = open(self.test_dir + "test2.csv", "wb")
-        f2.write("test,test,test")
-        f2.close()
-        f3 = open(self.test_dir + "test3.csv", "wb")
-        f3.write("test,test,test")
-        f3.close()
-
-
-        self.correct_file_list = ["test1.csv", "test2.csv", "test3.csv"]
-
-    def tearDown(self):
-        for testFile in self.correct_file_list:
-            os.remove(self.test_dir + testFile)
-        os.rmdir(self.test_dir)
-
     def test_find_three_csv(self):
-        self.assertEqual(self.correct_file_list, sorted(get_csvs(self.test_dir, 3)))
-
-    def test_find_no_csv(self):
-        empty_dir = ".\\nothing_here\\"
-        if not os.path.exists(empty_dir):
-            os.makedirs(empty_dir)
-        self.assertEqual([], get_csvs(empty_dir, 0))
-        os.rmdir(empty_dir)
+        self.test_dir = ".\\test_files\\"
+        self.correct_file_list = ["test1.csv", "test2.csv", "test3.csv"]
+        with patch("os.path.exists", return_value = True):
+            with patch("os.listdir", return_value = ["test1.csv", "test2.csv", "test3.csv", "blah.txt", "fakefile"]):
+                self.assertEqual(self.correct_file_list, sorted(get_csvs(self.test_dir)))
 
     def test_bad_path(self):
         with self.assertRaises(Exception):
-            get_csvs(".\\asdasdasdasd\\", 0)
+            with patch("os.path.exists", return_value = False):
+                get_csvs(".\\asdasdasdasd\\")
