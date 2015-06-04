@@ -3,9 +3,17 @@ from unittest import TestCase
 import os
 
 
+
 class TestImport(TestCase):
     """
     """
+    def setUp(self):
+        self.test_dir = './profiles/'
+        self.profile_name = "John.xml"
+
+    def tearDown(self):
+        if os.path.exists(self.test_dir + self.profile_name):
+            os.remove(self.test_dir + self.profile_name)
 
     def test_create_new_profile(self):
         profile = Profile("John Jacob Jingle.xml")
@@ -17,8 +25,6 @@ class TestImport(TestCase):
         self.assertEqual(profile.get_categories_map(), {})
 
     def test_create_and_export_existing_profile(self):
-        test_dir = './profiles/'
-        profile_name = "John.xml"
         setup_xml = "<data>" \
                     "<categories>" \
                     "<category id=\"1\" name=\"Beer\"></category>" \
@@ -32,23 +38,22 @@ class TestImport(TestCase):
                     "</categoriesMap>" \
                     "</data>"
 
-        with open(test_dir + profile_name, "w+") as f:
+        with open(self.test_dir + self.profile_name, "w+") as f:
             f.write(setup_xml)
 
-        profile = Profile(profile_name)
-        self.assertEqual(profile.get_name(), profile_name.split(".")[0])
+        profile = Profile(self.profile_name)
+        self.assertEqual(profile.get_name(), self.profile_name.split(".")[0])
         self.assertEqual(profile.get_categories(), {1: "Beer", 2: "Bread"})
         self.assertEqual(profile.get_categories_map(), {1: ["safeway", "76"], 2: ["fred-meyer", "wonder"]})
 
         profile.export()
 
-        with open(test_dir + profile_name) as f:
+        with open(self.test_dir + self.profile_name) as f:
             file_guts = f.read()
 
         self.assertEqual(file_guts, setup_xml)
 
-        if os.path.exists(test_dir + profile_name):
-            os.remove(test_dir + profile_name)
+
 
 
 
