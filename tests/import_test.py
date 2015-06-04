@@ -46,4 +46,5 @@ class TestImport(TestCase):
         os.rmdir(empty_dir)
 
     def test_bad_path(self):
-        self.assertEqual([], get_csvs(".\\asdasdasdasd\\"))
+        with self.assertRaises(Exception):
+            get_csvs(".\\asdasdasdasd\\")
