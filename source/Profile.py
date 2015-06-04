@@ -43,6 +43,9 @@ class Profile:
         return self.input_file_name.split(".")[0]
 
     def export(self):
+        if os.path.exists(self.profile_path + self.input_file_name):
+            os.remove(self.profile_path + self.input_file_name)
+
         with open(self.profile_path + self.input_file_name, "w+") as f:
             f.write("<data>")
             f.write("<categories>")

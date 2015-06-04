@@ -2,10 +2,14 @@ from unittest import TestCase
 import source.map_columns
 from io import BytesIO
 from mock import patch
+import os
 
 class TestMapper(TestCase):
 
     def setUp(self):
+        self.mapping_dir = '.\\mappings\\'
+        self.mapping_name = "US BANK"
+        self.mapping_ext = ".xml"
         self.row = ["2/8/2015 10:44",
                     "ID2992",
                     "POS Transaction",
@@ -19,7 +23,8 @@ class TestMapper(TestCase):
                     ""]
 
     def tearDown(self):
-        pass
+        if os.path.exists(self.mapping_dir + self.mapping_name + self.mapping_ext):
+            os.remove(self.mapping_dir + self.mapping_name + self.mapping_ext)
 
     @patch('sys.stdout', new_callable=BytesIO)
     def test_display_row(self, mock_stdout):
@@ -57,8 +62,32 @@ class TestMapper(TestCase):
             self.assertEqual(source.map_columns.get_bank_name(), "First Tech FCU")
         mock_input.assert_called_with("Enter the name of the bank this file is from: ")
 
-    def test_create_mapping(self):
+    def test_create_mapping_not_exist(self):
         test_mapping = source.map_columns.Mapping("First Tech FCU", True, 7, 1, 4, True)
         with patch('sys.stdout'):
             with patch('__builtin__.raw_input', side_effect=["First Tech FCU", "Y", "7", "1", "4", "Y"]):
                 self.assertEqual(source.map_columns.map_columns(self.row), test_mapping)
+
+    def test_create_mapping_from_file(self):
+        setup_xml = "<mapping name=\"US BANK\" hasHeader=\"True\" amountIndex=\"1\" " \
+                    "dateIndex=\"2\" memoIndex=\"3\" debitNegative=\"True\">" \
+                    "</mapping>"
+
+        with open(self.mapping_dir + self.mapping_name + self.mapping_ext, "w+") as f:
+            f.write(setup_xml)
+
+        mapping = source.map_columns.Mapping(self.mapping_name)
+
+        self.assertEqual(mapping.name, self.mapping_name)
+        self.assertEqual(mapping.has_header, True)
+        self.assertEqual(mapping.amount_column_index, 1)
+        self.assertEqual(mapping.date_column_index, 2)
+        self.assertEqual(mapping.memo_column_index, 3)
+        self.assertEqual(mapping.debit_as_negative, True)
+
+        mapping.export()
+
+        with open(self.mapping_dir + self.mapping_name + self.mapping_ext) as f:
+            file_guts = f.read()
+
+        self.assertEqual(file_guts, setup_xml)

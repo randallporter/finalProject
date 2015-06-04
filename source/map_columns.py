@@ -1,5 +1,5 @@
 from source.user_input import get_string, get_int
-
+from xml.dom import minidom
 import os
 
 
@@ -8,13 +8,25 @@ def cls():
 
 
 class Mapping:
-    def __init__(self, name, has_header, amount, date, memo, negative):
+    def __init__(self, name, has_header=None, amount=None, date=None, memo=None, negative=None):
+        self.mapping_path = ".\\mappings\\"
+        self.mapping_ext = ".xml"
         self.name = name
-        self.has_header = has_header
-        self.amount_column_index = amount
-        self.date_column_index = date
-        self.memo_column_index = memo
-        self.debit_as_negative = negative
+
+        if not os.path.exists(self.mapping_path + self.name + self.mapping_ext):
+            self.has_header = has_header
+            self.amount_column_index = amount
+            self.date_column_index = date
+            self.memo_column_index = memo
+            self.debit_as_negative = negative
+        else:
+            xml_document = minidom.parse(self.mapping_path + self.name + self.mapping_ext)
+            x_map = xml_document.getElementsByTagName('mapping')[0]
+            self.has_header = bool(x_map.attributes['hasHeader'].value)
+            self.amount_column_index = int(x_map.attributes['amountIndex'].value)
+            self.date_column_index = int(x_map.attributes['dateIndex'].value)
+            self.memo_column_index = int(x_map.attributes['memoIndex'].value)
+            self.debit_as_negative = bool(x_map.attributes['debitNegative'].value)
 
     def __eq__(self, other) :
         return self.name == other.name \
@@ -23,6 +35,20 @@ class Mapping:
             and self.date_column_index == other.date_column_index \
             and self.memo_column_index == other.memo_column_index \
             and self.debit_as_negative == other.debit_as_negative
+
+    def export(self):
+        if os.path.exists(self.mapping_path + self.name + self.mapping_ext):
+            os.remove(self.mapping_path + self.name + self.mapping_ext)
+
+        with open(self.mapping_path + self.name + self.mapping_ext, "w+") as f:
+            f.write("<mapping")
+            f.write(" name=\"" + self.name + "\"")
+            f.write(" hasHeader=\"" + str(self.has_header) + "\"")
+            f.write(" amountIndex=\"" + str(self.amount_column_index) + "\"")
+            f.write(" dateIndex=\"" + str(self.date_column_index) + "\"")
+            f.write(" memoIndex=\"" + str(self.memo_column_index) + "\"")
+            f.write(" debitNegative=\"" + str(self.debit_as_negative) + "\"")
+            f.write("></mapping>")
 
 
 def display_row(row):
