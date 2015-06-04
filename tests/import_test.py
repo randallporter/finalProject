@@ -43,6 +43,7 @@ class TestImport(TestCase):
         if not os.path.exists(empty_dir):
             os.makedirs(empty_dir)
         self.assertEqual([], get_csvs(empty_dir))
+        os.rmdir(empty_dir)
 
     def test_bad_path(self):
         self.assertEqual([], get_csvs(".\\asdasdasdasd\\"))
