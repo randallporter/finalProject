@@ -16,7 +16,7 @@ class TestImport(TestCase):
     """
 
     def setUp(self):
-        self.test_dir = "\\test_files\\"
+        self.test_dir = ".\\test_files\\"
 
         if not os.path.exists(self.test_dir):
             os.makedirs(self.test_dir)
@@ -39,10 +39,10 @@ class TestImport(TestCase):
         self.assertEqual(self.correct_file_list, sorted(get_csvs(self.test_dir)))
 
     def test_find_no_csv(self):
-        empty_dir = "\\nothing_here\\"
+        empty_dir = ".\\nothing_here\\"
         if not os.path.exists(empty_dir):
             os.makedirs(empty_dir)
         self.assertEqual([], get_csvs(empty_dir))
 
     def test_bad_path(self):
-        self.assertEqual([], get_csvs("\\asdasdasdasd\\"))
+        self.assertEqual([], get_csvs(".\\asdasdasdasd\\"))
