@@ -6,7 +6,7 @@ class Profile:
 
     def __init__(self, input_file_name):
         self.input_file_name = input_file_name
-        self.profile_path = "./profiles/"
+        self.profile_path = ".\\profiles\\"
         self.categories = {}
         self.categories_map = {}
 

@@ -8,7 +8,7 @@ class TestImport(TestCase):
     """
     """
     def setUp(self):
-        self.test_dir = './profiles/'
+        self.test_dir = '.\\profiles\\'
         self.profile_name = "John.xml"
 
     def tearDown(self):
