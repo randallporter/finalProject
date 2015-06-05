@@ -2,6 +2,7 @@ import os
 from xml.dom import minidom
 import logging
 
+
 class Profile:
 
     def __init__(self, input_file_name):
@@ -59,7 +60,3 @@ class Profile:
                     f.write("<categorymap id=\"" + str(k) + "\" name=\"" + array_item + "\"></categorymap>")
             f.write("</categoriesMap>")
             f.write("</data>")
-
-
-
-

@@ -1,5 +1,6 @@
 import os
 
+
 def get_csvs(provided_path):
     file_list = []
     if os.path.exists(provided_path):
@@ -9,6 +10,7 @@ def get_csvs(provided_path):
     else:
         raise Exception(provided_path + " does not exist.")
     return file_list
+
 
 def csv_to_dict_of_arrays(file_names):
     data = {}

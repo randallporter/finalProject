@@ -3,7 +3,6 @@ from unittest import TestCase
 import os
 
 
-
 class TestImport(TestCase):
     """
     """
@@ -52,9 +51,3 @@ class TestImport(TestCase):
             file_guts = f.read()
 
         self.assertEqual(file_guts, setup_xml)
-
-
-
-
-
-

@@ -4,7 +4,7 @@ import os
 
 
 def cls():
-    os.system(['clear','cls'][os.name == 'nt'])
+    os.system(['clear', 'cls'][os.name == 'nt'])
 
 
 class Mapping:
@@ -28,7 +28,7 @@ class Mapping:
             self.memo_column_index = int(x_map.attributes['memoIndex'].value)
             self.debit_as_negative = bool(x_map.attributes['debitNegative'].value)
 
-    def __eq__(self, other) :
+    def __eq__(self, other):
         return self.name == other.name \
             and self.has_header == other.has_header \
             and self.amount_column_index == other.amount_column_index \
