@@ -1,5 +1,6 @@
 import difflib
-from source.user_input import get_int
+import source.user_input
+import logging
 
 
 def single_string_similarity(transaction, input_string):
@@ -42,15 +43,21 @@ def match_transaction_to_category(transaction, categories_map, category_names, t
 
     if all_matches[max_match] >= tolerance:
         matches_array = get_match_per_string_array(transaction, categories_map[max_match])
-        categories_map[max_match][matches_array.index(max(matches_array))].append(transaction.memo)
+        if transaction.memo not in categories_map[max_match][matches_array.index(max(matches_array))]:
+            categories_map[max_match][matches_array.index(max(matches_array))].append(transaction.memo)
         transaction.categoryID = max_match
         print 'Mapped "' + transaction.memo + '" to category "' + category_names[max_match] + '" (' + str(all_matches[max(all_matches)]) + '% match)'
     else:
         display_max_per_category(transaction, categories_map, category_names)
-        category = get_int('\n Enter the category number that "' + transaction.memo + '" fits into and press enter')
+        category = source.user_input.get_int('\n Enter the category number that "' + transaction.memo + '" fits into and press enter')
+        logging.debug('Mapped "' + transaction.memo + '" to category "' + category_names[category] + '" (' + str(category) + ')')
         categories_map[category].append([transaction.memo])
         transaction.categoryID = category
         print 'Mapped "' + transaction.memo + '" to category "' + category_names[category] + '"'
+
+def match_transactions_to_categories(transactions, categories_map, category_names, tolerance):
+    for transaction in transactions:
+        match_transaction_to_category(transaction, categories_map, category_names, tolerance)
 
 
 def key_with_max_val(dict):

@@ -128,3 +128,28 @@ class TestMatching(TestCase):
         self.assertEqual(fake_categories_map, expected)
         self.assertEqual(fake_transaction.categoryID, 8)
         self.assertEqual(mock_stdout.getvalue(), expected_output + expected_output_1)
+
+    def test_map_transaction_list(self):
+
+        fake_categories_map = {8: [["safeway 1", "Safeway 234", "Safeway A"], ["Fred Meyer", "Fred Meyer 1", "FredMeyer"]],
+                               1: [["Home depot", "home depot asd", "homedepot"], ["lowe's", "LOWES", "LOWES 12121"]]}
+        fake_category_names = {8: "groceries", 1: "home improvement"}
+
+        fake_transaction_list = [Transaction("1.23", "1/1/2011", "safeway"),
+                                 Transaction("1.10", "2/2/2012", "fred meyer"),
+                                 Transaction("44.00", "3/3/2013", "lowe's"),
+                                 Transaction("22.00", "4/4/2014", "home depot"),
+                                 Transaction("23.00", "5/5/2015", "albertson's")]
+
+        expected = {8: [["safeway 1", "Safeway 234", "Safeway A", "safeway"],
+                        ["Fred Meyer", "Fred Meyer 1", "FredMeyer", "fred meyer"],
+                        ["albertson's"]],
+                    1: [["Home depot", "home depot asd", "homedepot", "home depot"], ["lowe's", "LOWES", "LOWES 12121"]]}
+
+        fake_tolerance = 80
+
+        with patch('sys.stdout'):
+            with patch('__builtin__.raw_input', return_value="8"):
+                source.map_categories.match_transactions_to_categories(fake_transaction_list, fake_categories_map,
+                                                                       fake_category_names, fake_tolerance)
+        self.assertEqual(fake_categories_map, expected)
