@@ -70,19 +70,18 @@ def get_negative_withdrawals():
     return get_string("Does the file use negative values for withdrawals? Enter Y or N for yes or no") == "Y"
 
 
-def get_bank_name():
-    return get_string("Enter the name of the bank this file is from")
-
-
-def map_columns(row):
-    name = get_bank_name()
-    display_row(row)
-    has_header = get_has_headers()
-    cls()
-    display_row(row)
-    mapping = get_columns()
-    cls()
-    display_row(row)
-    negative = get_negative_withdrawals()
-    cls()
-    return Mapping(name, has_header, mapping[0], mapping[1], mapping[2], negative)
+def map_columns(row, name):
+    mapping = Mapping(name)
+    # if has_headers is null no map already exists
+    if mapping.has_header is None:
+        display_row(row)
+        has_header = get_has_headers()
+        cls()
+        display_row(row)
+        mapping = get_columns()
+        cls()
+        display_row(row)
+        negative = get_negative_withdrawals()
+        cls()
+        mapping = Mapping(name, has_header, mapping[0], mapping[1], mapping[2], negative)
+    return mapping

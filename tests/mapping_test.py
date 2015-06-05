@@ -61,16 +61,11 @@ class TestMapper(TestCase):
         with patch('__builtin__.raw_input', return_value="N"):
             self.assertFalse(source.map_columns.get_negative_withdrawals())
 
-    def test_bank_name(self):
-        with patch('__builtin__.raw_input', return_value="First Tech FCU") as mock_input:
-            self.assertEqual(source.map_columns.get_bank_name(), "First Tech FCU")
-        mock_input.assert_called_with("Enter the name of the bank this file is from: ")
-
     def test_create_mapping_not_exist(self):
         test_mapping = source.map_columns.Mapping("First Tech FCU", True, 7, 1, 4, True)
         with patch('sys.stdout'):
-            with patch('__builtin__.raw_input', side_effect=["First Tech FCU", "Y", "7", "1", "4", "Y"]):
-                self.assertEqual(source.map_columns.map_columns(self.row), test_mapping)
+            with patch('__builtin__.raw_input', side_effect=["Y", "7", "1", "4", "Y"]):
+                self.assertEqual(source.map_columns.map_columns(self.row, "First Tech FCU"), test_mapping)
 
     def test_create_mapping_from_file(self):
         setup_xml = "<mapping name=\"US BANK\" hasHeader=\"True\" amountIndex=\"1\" " \

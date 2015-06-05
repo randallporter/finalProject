@@ -117,6 +117,13 @@ class Profile:
         for item in delete_me:
             self.file_name_bank_map.pop(item)
 
+    def get_input_tolerance(self):
+        user_input = get_string("Enter a number between 0 and 100 to represent the percentage match you"
+                                " would like for the system to auto categorize the transaction "
+                                "(type 'skip' for default value of 80)")
+        if user_input != 'skip':
+            self.upper_tolerance = int(user_input)
+
 
 # NON CLASS HELPER FUNCTIONS
 

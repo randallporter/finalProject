@@ -1,5 +1,7 @@
 from source.Profile import Profile
 from source.Profile import csv_to_dict_of_arrays, get_input_name
+from source.map_columns import map_columns
+from source.Transaction import map_data_to_transaction
 from unittest import TestCase
 import os
 from mock import patch
@@ -70,8 +72,13 @@ class TestProfile(TestCase):
                                        "use that file: ")
             self.assertEqual(mock_input.call_count, 3)
 
-        # TODO test fill transaction_list based on file_name_bank_map and the name of the map
-        # TODO test asking for upper_tolerance
+        # Ask upper_tolerance
+        with patch('__builtin__.raw_input', return_value="75") as mock_input:
+            up_tol = profile.get_input_tolerance()
+            self.assertEqual(75, profile.upper_tolerance)
+            mock_input.assert_called_with("Enter a number between 0 and 100 to represent the percentage match you"
+                                          " would like for the system to auto categorize the transaction (type"
+                                          " 'skip' for default value of 80): ")
 
     def test_create_and_export_existing_profile(self):
         setup_xml = "<data>" \
