@@ -7,8 +7,8 @@ class Profile:
     def __init__(self, input_file_name):
         self.input_file_name = input_file_name
         self.profile_path = ".\\profiles\\"
-        self.categories = {}
-        self.categories_map = {}
+        self.categories = {}        # dictionary
+        self.categories_map = {}    # dictionary of an array of arrays
 
         # No profile exists
         if not os.path.exists(self.profile_path + self.input_file_name):
@@ -27,11 +27,15 @@ class Profile:
             cat_map_list = xml_document.getElementsByTagName('categorymap')
             for cat_map in cat_map_list:
                 cat_id = int(str(cat_map.attributes['id'].value))
-                cat_ame = str(cat_map.attributes['name'].value)
-                logging.debug(str(id) + "|||" + cat_ame)
+                cat_name = str(cat_map.attributes['name'].value)
+                cat_idx = int(str(cat_map.attributes['index'].value))
+                logging.debug(str(id) + "|||" + cat_name)
                 if cat_id not in self.categories_map:
-                    self.categories_map.update({cat_id: []})
-                self.categories_map[cat_id].append(cat_ame)
+                    self.categories_map.update({cat_id: [[]]})
+                if len(self.categories_map[cat_id]) <= cat_idx:
+                    self.categories_map[cat_id].append([cat_name])
+                else:
+                    self.categories_map[cat_id][cat_idx].append(cat_name)
 
     def get_categories(self):
         return self.categories
@@ -55,8 +59,11 @@ class Profile:
 
             f.write("<categoriesMap>")
             for k, v in self.categories_map.items():
-                for array_item in v:
-                    f.write("<categorymap id=\"" + str(k) + "\" name=\"" + array_item + "\"></categorymap>")
+                i = 0
+                for array_of_arrays in v:
+                    for array_item in array_of_arrays:
+                        f.write("<categorymap id=\"" + str(k) + "\" index=\"" + str(i) + "\" name=\"" + array_item + "\"></categorymap>")
+                    i += 1
             f.write("</categoriesMap>")
             f.write("</data>")
 
