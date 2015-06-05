@@ -13,7 +13,8 @@ class TestMatching(TestCase):
     def test_get_highest_match_per_category(self):
 
         fake_transaction = Transaction("2.49", "11/02/1991 8:00", "FREDMEYER 123")
-        fake_categories_map = {8: [["safeway 1", "Safeway 234", "Safeway A"], ["Fred Meyer", "Fred Meyer 1", "FredMeyer"]],
+        fake_categories_map = {8: [["safeway 1", "Safeway 234", "Safeway A"],
+                                   ["Fred Meyer", "Fred Meyer 1", "FredMeyer"]],
                                1: [["Home depot", "home depot asd", "homedepot"], ["lowe's", "LOWES", "LOWES 12121"]]}
 
         result = source.map_categories.get_highest_match_per_category(fake_transaction, fake_categories_map)
@@ -64,3 +65,18 @@ class TestMatching(TestCase):
         result = source.map_categories.get_match_per_string_array(fake_transaction, fake_string_lists)
 
         self.assertEqual(expected, result)
+
+    @patch('sys.stdout', new_callable=BytesIO)
+    def test_display_max_for_each_category(self, mock_stdout):
+
+        fake_categories_map = {8: [["safeway 1", "Safeway 234", "Safeway A"], ["Fred Meyer", "Fred Meyer 1", "FredMeyer"]],
+                               1: [["Home depot", "home depot asd", "homedepot"], ["lowe's", "LOWES", "LOWES 12121"]]}
+        fake_category_names = {8: "groceries", 1: "home improvement"}
+
+        fake_transaction = Transaction("2.49", "11/02/1991 8:00", "FREDMEYER 123")
+
+        correct_output = "1. home improvement: 27%\n8. groceries: 82%\n"
+
+        source.map_categories.display_max_per_category(fake_transaction, fake_categories_map, fake_category_names)
+
+        self.assertEqual(mock_stdout.getvalue(), correct_output)
