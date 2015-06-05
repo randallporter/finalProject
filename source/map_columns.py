@@ -1,10 +1,6 @@
-from source.user_input import get_string, get_int
+from source.user_input import get_string, get_int, cls
 from xml.dom import minidom
 import os
-
-
-def cls():
-    os.system(['clear', 'cls'][os.name == 'nt'])
 
 
 class Mapping:
