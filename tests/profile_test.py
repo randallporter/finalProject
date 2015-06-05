@@ -77,8 +77,7 @@ class TestProfile(TestCase):
             up_tol = profile.get_input_tolerance()
             self.assertEqual(75, profile.upper_tolerance)
             mock_input.assert_called_with("Enter a number between 0 and 100 to represent the percentage match you"
-                                          " would like for the system to auto categorize the transaction (type"
-                                          " 'skip' for default value of 80): ")
+                                          " would like for the system to auto categorize the transaction: ")
 
     def test_create_and_export_existing_profile(self):
         setup_xml = "<data>" \
