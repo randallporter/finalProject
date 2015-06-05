@@ -4,7 +4,6 @@ import os
 
 
 
-class TestImport(TestCase):
 class TestProfile(TestCase):
     """
     """
@@ -32,10 +31,6 @@ class TestProfile(TestCase):
                     "<category id=\"2\" name=\"Bread\"></category>" \
                     "</categories>" \
                     "<categoriesMap>" \
-                    "<categorymap id=\"1\" name=\"safeway\"></categorymap>" \
-                    "<categorymap id=\"1\" name=\"76\"></categorymap>" \
-                    "<categorymap id=\"2\" name=\"fred-meyer\"></categorymap>" \
-                    "<categorymap id=\"2\" name=\"wonder\"></categorymap>" \
                     "<categorymap id=\"1\" index=\"0\" name=\"safeway\"></categorymap>" \
                     "<categorymap id=\"1\" index=\"0\" name=\"safeway drugs\"></categorymap>" \
                     "<categorymap id=\"1\" index=\"1\" name=\"albertsons\"></categorymap>" \
@@ -50,7 +45,6 @@ class TestProfile(TestCase):
         profile = Profile(self.profile_name)
         self.assertEqual(profile.get_name(), self.profile_name.split(".")[0])
         self.assertEqual(profile.get_categories(), {1: "Beer", 2: "Bread"})
-        self.assertEqual(profile.get_categories_map(), {1: ["safeway", "76"], 2: ["fred-meyer", "wonder"]})
         self.assertEqual(profile.get_categories_map(), {1: [["safeway", "safeway drugs"], ["albertsons"]],
                                                         2: [["fred-meyer"], ["wonder"]]})
 
@@ -60,4 +54,3 @@ class TestProfile(TestCase):
             file_guts = f.read()
 
         self.assertEqual(file_guts, setup_xml)
-
