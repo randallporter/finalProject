@@ -10,6 +10,8 @@ class Profile:
         self.profile_path = ".\\profiles\\"
         self.categories = {}        # dictionary
         self.categories_map = {}    # dictionary of an array of arrays
+        self.transaction_list = []
+        self.upper_tolerance = 80   # 80%
 
         # No profile exists
         if not os.path.exists(self.profile_path + self.input_file_name):
