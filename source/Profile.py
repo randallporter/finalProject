@@ -16,7 +16,6 @@ class Profile:
         self.file_name_bank_map = {}    # dictionary with file name as k and bank name from user as v
         self.upper_tolerance = None
         self.transaction_list = []
-        self.upper_tolerance = 80   # 80%
 
         # No profile exists
         if not os.path.exists(self.profile_path + self.name + self.profile_ext):
