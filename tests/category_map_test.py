@@ -80,3 +80,51 @@ class TestMatching(TestCase):
         source.map_categories.display_max_per_category(fake_transaction, fake_categories_map, fake_category_names)
 
         self.assertEqual(mock_stdout.getvalue(), correct_output)
+
+    @patch('sys.stdout', new_callable=BytesIO)
+    def test_automatic_match(self, mock_stdout):
+
+        fake_categories_map = {8: [["safeway 1", "Safeway 234", "Safeway A"], ["Fred Meyer", "Fred Meyer 1", "FredMeyer"]],
+                               1: [["Home depot", "home depot asd", "homedepot"], ["lowe's", "LOWES", "LOWES 12121"]]}
+        fake_category_names = {8: "groceries", 1: "home improvement"}
+
+        fake_transaction = Transaction("2.49", "11/02/1991 8:00", "FREDMEYER 123")
+
+        expected = {8: [["safeway 1", "Safeway 234", "Safeway A"], ["Fred Meyer", "Fred Meyer 1", "FredMeyer", "FREDMEYER 123"]],
+                               1: [["Home depot", "home depot asd", "homedepot"], ["lowe's", "LOWES", "LOWES 12121"]]}
+
+        fake_tolerance = 80
+
+        source.map_categories.match_transaction_to_category(fake_transaction, fake_categories_map,
+                                                            fake_category_names, fake_tolerance)
+
+        expected_output = 'Mapped "' + fake_transaction.memo + '" to category "groceries" (82% match)\n'
+
+        self.assertEqual(fake_categories_map, expected)
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+        self.assertEqual(fake_transaction.categoryID, 8)
+
+    @patch('sys.stdout', new_callable=BytesIO)
+    def test_user_match(self, mock_stdout):
+
+        fake_categories_map = {8: [["safeway 1", "Safeway 234", "Safeway A"], ["Fred Meyer", "Fred Meyer 1", "FredMeyer"]],
+                               1: [["Home depot", "home depot asd", "homedepot"], ["lowe's", "LOWES", "LOWES 12121"]]}
+        fake_category_names = {8: "groceries", 1: "home improvement"}
+
+        fake_transaction = Transaction("10.99", "11/02/1992 9:00", "Grocery Outlet 27")
+
+        expected = {8: [["safeway 1", "Safeway 234", "Safeway A"], ["Fred Meyer", "Fred Meyer 1", "FredMeyer"], ["Grocery Outlet 27"]],
+                               1: [["Home depot", "home depot asd", "homedepot"], ["lowe's", "LOWES", "LOWES 12121"]]}
+
+        fake_tolerance = 80
+
+        with patch('__builtin__.raw_input', return_value="8") as mock_input:
+            source.map_categories.match_transaction_to_category(fake_transaction, fake_categories_map, fake_category_names, fake_tolerance)
+        mock_input.assert_called_with('\n Enter the category number that "' + fake_transaction.memo + '" fits into and press enter: ')
+
+        expected_output = "1. home improvement: 35%\n8. groceries: 24%\n"
+        expected_output_1 = 'Mapped "' + fake_transaction.memo + '" to category "groceries"\n'
+
+        self.assertEqual(fake_categories_map, expected)
+        self.assertEqual(fake_transaction.categoryID, 8)
+        self.assertEqual(mock_stdout.getvalue(), expected_output + expected_output_1)
