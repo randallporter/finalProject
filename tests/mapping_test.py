@@ -4,6 +4,7 @@ from io import BytesIO
 from mock import patch
 import os
 
+
 class TestMapper(TestCase):
 
     def setUp(self):
@@ -29,7 +30,10 @@ class TestMapper(TestCase):
     @patch('sys.stdout', new_callable=BytesIO)
     def test_display_row(self, mock_stdout):
         source.map_columns.display_row(self.row)
-        self.correct_output = "1. 2/8/2015 10:44\n2. ID2992\n3. POS Transaction\n4. 444500071733 LITTLE CAESARS 1593 159ALOHA        ORUS\n5. POS Transaction 444500071733 LITTLE CAESARS 1593 159ALOHA        ORUS\n6. \n7. -8.99\n8. \n9. 417.72\n10. 2/8/2015 0:00\n11. \n"
+        self.correct_output = "1. 2/8/2015 10:44\n2. ID2992\n3. POS Transaction\n" \
+                              "4. 444500071733 LITTLE CAESARS 1593 159ALOHA        ORUS\n" \
+                              "5. POS Transaction 444500071733 LITTLE CAESARS 1593 159ALOHA        ORUS\n" \
+                              "6. \n7. -8.99\n8. \n9. 417.72\n10. 2/8/2015 0:00\n11. \n"
         self.assertEqual(mock_stdout.getvalue(), self.correct_output)
 
     def test_header(self):
