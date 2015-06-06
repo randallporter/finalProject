@@ -12,6 +12,8 @@ def multi_string_average_similarity(transaction, input_string_array):
     for memo in input_string_array:
         total += single_string_similarity(transaction, memo)
 
+    if len(input_string_array) == 0:
+        return 0
     return total / len(input_string_array)
 
 
@@ -32,16 +34,19 @@ def display_max_per_category(transaction, categories_map, category_names):
 
     matches = get_highest_match_per_category(transaction, categories_map)
 
-    for key in sorted(categories_map.keys()):
-        print str(key) + ". " + category_names[key] + ": " + str(matches[key]) + "%"
+    for key in sorted(category_names.keys()):
+        if key in matches:
+            print str(key) + ". " + category_names[key] + ": " + str(matches[key]) + "%"
+        else:
+            print str(key) + ". " + category_names[key] + ": " + "0" + "%"
 
 def match_transaction_to_category(transaction, categories_map, category_names, tolerance):
 
     all_matches = get_highest_match_per_category(transaction, categories_map)
+    if all_matches != {}:
+        max_match = key_with_max_val(all_matches)
 
-    max_match = key_with_max_val(all_matches)
-
-    if all_matches[max_match] >= tolerance:
+    if all_matches != {} and all_matches[max_match] >= tolerance:
         matches_array = get_match_per_string_array(transaction, categories_map[max_match])
         if transaction.memo not in categories_map[max_match][matches_array.index(max(matches_array))]:
             categories_map[max_match][matches_array.index(max(matches_array))].append(transaction.memo)
@@ -51,7 +56,11 @@ def match_transaction_to_category(transaction, categories_map, category_names, t
         display_max_per_category(transaction, categories_map, category_names)
         category = source.user_input.get_int('\n Enter the category number that "' + transaction.memo + '" fits into and press enter')
         logging.debug('Mapped "' + transaction.memo + '" to category "' + category_names[category] + '" (' + str(category) + ')')
-        categories_map[category].append([transaction.memo])
+        if category not in categories_map:
+            categories_map.update({category:[transaction.memo]})
+        else:
+            categories_map[category].append([transaction.memo])
+
         transaction.categoryID = category
         print 'Mapped "' + transaction.memo + '" to category "' + category_names[category] + '"'
 

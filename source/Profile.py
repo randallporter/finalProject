@@ -115,8 +115,8 @@ class Profile:
     def get_file_banks(self):
         delete_me = []
         for a_file in self.file_name_bank_map:
-            user_input = get_string("Enter the name of the bank this file is from "
-                                    "or type 'skip' you do not wish to use that file")
+            user_input = get_string("Enter the name of the bank this file is from " + a_file +
+                                    " or type 'skip' you do not wish to use that file")
             if user_input != 'skip':
                 self.file_name_bank_map[a_file] = user_input
             else:
