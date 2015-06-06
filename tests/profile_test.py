@@ -3,6 +3,7 @@ from source.Profile import get_input_name
 from unittest import TestCase
 import os
 from mock import patch
+import source
 
 
 class TestProfile(TestCase):
@@ -100,12 +101,21 @@ class TestProfile(TestCase):
         self.assertEqual(profile.get_categories_map(), {1: [["safeway", "safeway drugs"], ["albertsons"]],
                                                         2: [["fred-meyer"], ["wonder"]]})
 
-        profile.export()
+        csv_out = "1/1/2011,1.23,freddy's,groceries\n2/2/2012,1.10,safeway,groceries\n3/3/2013,44.00,binco's,apparel\n4/4/2014,22.00,macy's,apparel\n5/5/2015,23.00,union 76,gas\n"
+
+        with patch("source.Transaction.transaction_list_to_csv", return_value=csv_out):
+            profile.export()
 
         with open(self.test_dir + self.profile_name + self.profile_name_ext) as f:
             file_guts = f.read()
 
         self.assertEqual(file_guts, setup_xml)
+
+        with open(self.test_dir + "John export.csv") as f1:
+            file_output = f1.read()
+
+        self.assertEqual(file_output, csv_out)
+
 
     # TODO export transactions
 

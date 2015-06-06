@@ -2,6 +2,7 @@ import os
 from xml.dom import minidom
 import logging
 from source.user_input import get_string, get_int
+import source.Transaction
 
 
 class Profile:
@@ -74,6 +75,11 @@ class Profile:
             f.write("</categoriesMap>")
             f.write("</data>")
 
+        csv_out = source.Transaction.transaction_list_to_csv(self.transaction_list, self.categories)
+
+        with open(self.profile_path + self.name + " export.csv", "w+") as f1:
+            f1.write(csv_out)
+
     def print_categories(self):
         return_str = ""
         for k, v in self.categories.items():
@@ -83,20 +89,22 @@ class Profile:
     def get_categories_to_delete(self):
         user_input = get_string(self.print_categories() + "Enter the indexes of the categories you do not want, "
                            "separated by a comma (ex: 1,2,3) or type 'skip'")
-        user_input = user_input.split(",")
-        for num in user_input:
-            self.categories.pop(int(num))
+        if user_input != "skip":
+            user_input = user_input.split(",")
+            for num in user_input:
+                if user_input != "skip": self.categories.pop(int(num))
 
     def get_categories_to_add(self):
         user_input = get_string("Enter the names of any new categories, "
                                 "separated by a comma (ex: shoes,gas,out to eat) or type 'skip'")
-        user_input = user_input.split(",")
-        max_index = 0
-        for idx in self.categories:
-            max_index = idx
-        for cat in user_input:
-            max_index += 1
-            self.categories.update({max_index: cat})
+        if user_input != "skip":
+            user_input = user_input.split(",")
+            max_index = 0
+            for idx in self.categories:
+                max_index = idx
+            for cat in user_input:
+                max_index += 1
+                self.categories.update({max_index: cat})
 
     def get_csvs(self, provided_path=".\\"):
         if os.path.exists(provided_path):
