@@ -66,7 +66,7 @@ class TestProfile(TestCase):
             profile.get_file_banks()
             self.assertEqual({"test2.csv": "bank2", "test1.csv": "bank1"},
                              profile.file_name_bank_map)
-            mock_input.assert_any_call("Enter the name of the bank this file is from or type 'skip' you do not wish to "
+            mock_input.assert_any_call("Enter the name of the bank this file is from test2.csv or type 'skip' you do not wish to "
                                        "use that file: ")
             self.assertEqual(mock_input.call_count, 3)
 
