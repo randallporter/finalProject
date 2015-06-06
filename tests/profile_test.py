@@ -1,11 +1,8 @@
 from source.Profile import Profile
-from source.Profile import csv_to_dict_of_arrays, get_input_name
-from source.map_columns import map_columns
-from source.Transaction import map_data_to_transaction
+from source.Profile import get_input_name
 from unittest import TestCase
 import os
 from mock import patch
-import source
 
 
 class TestProfile(TestCase):
@@ -74,7 +71,7 @@ class TestProfile(TestCase):
 
         # Ask upper_tolerance
         with patch('__builtin__.raw_input', return_value="75") as mock_input:
-            up_tol = profile.get_input_tolerance()
+            profile.get_input_tolerance()
             self.assertEqual(75, profile.upper_tolerance)
             mock_input.assert_called_with("Enter a number between 0 and 100 to represent the percentage match you"
                                           " would like for the system to auto categorize the transaction: ")
