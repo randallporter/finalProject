@@ -23,6 +23,13 @@ class TestMatching(TestCase):
 
         self.assertEqual(result, expected)
 
+    def test_get_highest_match_per_category_blank(self):
+        fake_transaction = Transaction("2.49", "11/02/1991 8:00", "FREDMEYER 123")
+        fake_categories_map = {}
+        expected = {}
+        result = source.map_categories.get_highest_match_per_category(fake_transaction, fake_categories_map)
+        self.assertEqual(result, expected)
+
     def test_compare_single_string(self):
 
         fake_transaction = Transaction("2.49", "11/02/1991 8:00", "FREDMEYER 123")
@@ -46,6 +53,17 @@ class TestMatching(TestCase):
             expected += difflib.SequenceMatcher(a=fake_transaction.memo.upper(), b=a.upper()).ratio() * 100
 
         expected = int(expected / len(fake_string_list))
+
+        self.assertEqual(result, expected)
+
+    def test_compare_multiple_string_empty(self):
+
+        fake_transaction = Transaction("2.49", "11/02/1991 8:00", "FREDMEYER 123")
+        fake_string_list = []
+
+        result = source.map_categories.multi_string_average_similarity(fake_transaction, fake_string_list)
+
+        expected = 0
 
         self.assertEqual(result, expected)
 
@@ -76,6 +94,20 @@ class TestMatching(TestCase):
         fake_transaction = Transaction("2.49", "11/02/1991 8:00", "FREDMEYER 123")
 
         correct_output = "1. home improvement: 27%\n8. groceries: 82%\n"
+
+        source.map_categories.display_max_per_category(fake_transaction, fake_categories_map, fake_category_names)
+
+        self.assertEqual(mock_stdout.getvalue(), correct_output)
+
+    @patch('sys.stdout', new_callable=BytesIO)
+    def test_display_max_for_each_category(self, mock_stdout):
+
+        fake_categories_map = {}
+        fake_category_names = {8: "groceries", 1: "home improvement"}
+
+        fake_transaction = Transaction("2.49", "11/02/1991 8:00", "FREDMEYER 123")
+
+        correct_output = "1. home improvement: 0%\n8. groceries: 0%\n"
 
         source.map_categories.display_max_per_category(fake_transaction, fake_categories_map, fake_category_names)
 
@@ -120,9 +152,34 @@ class TestMatching(TestCase):
 
         with patch('__builtin__.raw_input', return_value="8") as mock_input:
             source.map_categories.match_transaction_to_category(fake_transaction, fake_categories_map, fake_category_names, fake_tolerance)
-        mock_input.assert_called_with('\n Enter the category number that "' + fake_transaction.memo + '" fits into and press enter: ')
+        mock_input.assert_called_with('\n Enter the category number that "' + fake_transaction.date + " $"
+                                             + fake_transaction.amount + " " + fake_transaction.memo + '" fits into and press enter: ')
 
         expected_output = "1. home improvement: 35%\n8. groceries: 24%\n"
+        expected_output_1 = 'Mapped "' + fake_transaction.memo + '" to category "groceries"\n'
+
+        self.assertEqual(fake_categories_map, expected)
+        self.assertEqual(fake_transaction.categoryID, 8)
+        self.assertEqual(mock_stdout.getvalue(), expected_output + expected_output_1)
+
+    @patch('sys.stdout', new_callable=BytesIO)
+    def test_user_match(self, mock_stdout):
+
+        fake_categories_map = {}
+        fake_category_names = {8: "groceries", 1: "home improvement"}
+
+        fake_transaction = Transaction("10.99", "11/02/1992 9:00", "Grocery Outlet 27")
+
+        expected = {8: [[fake_transaction.memo]]}
+
+        fake_tolerance = 80
+
+        with patch('__builtin__.raw_input', return_value="8") as mock_input:
+            source.map_categories.match_transaction_to_category(fake_transaction, fake_categories_map, fake_category_names, fake_tolerance)
+        mock_input.assert_called_with('\n Enter the category number that "' + fake_transaction.date + " $"
+                                             + fake_transaction.amount + " " + fake_transaction.memo + '" fits into and press enter: ')
+
+        expected_output = "1. home improvement: 0%\n8. groceries: 0%\n"
         expected_output_1 = 'Mapped "' + fake_transaction.memo + '" to category "groceries"\n'
 
         self.assertEqual(fake_categories_map, expected)

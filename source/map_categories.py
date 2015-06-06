@@ -51,13 +51,14 @@ def match_transaction_to_category(transaction, categories_map, category_names, t
         if transaction.memo not in categories_map[max_match][matches_array.index(max(matches_array))]:
             categories_map[max_match][matches_array.index(max(matches_array))].append(transaction.memo)
         transaction.categoryID = max_match
-        print 'Mapped "' + transaction.memo + '" to category "' + category_names[max_match] + '" (' + str(all_matches[max(all_matches)]) + '% match)'
+        print 'Mapped "' + transaction.memo + '" to category "' + category_names[max_match] + '" (' + str(all_matches[max_match]) + '% match)'
     else:
         display_max_per_category(transaction, categories_map, category_names)
-        category = source.user_input.get_int('\n Enter the category number that "' + transaction.memo + '" fits into and press enter')
+        category = source.user_input.get_int('\n Enter the category number that "' + transaction.date + " $"
+                                             + transaction.amount + " " + transaction.memo + '" fits into and press enter')
         logging.debug('Mapped "' + transaction.memo + '" to category "' + category_names[category] + '" (' + str(category) + ')')
         if category not in categories_map:
-            categories_map.update({category:[transaction.memo]})
+            categories_map.update({category:[[transaction.memo]]})
         else:
             categories_map[category].append([transaction.memo])
 
